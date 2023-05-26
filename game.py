@@ -4,12 +4,12 @@ import pygame
 pygame.init()
 
 ticker = pygame.time.Clock()
-width = 540 * 2
-height = 480 * 2
+width = 700
+height = 600
 window = pygame.display.set_mode((width,height))
 
 
-groundHitboxes = [(pygame.Rect(0,width,5,-400))]
+groundHitboxes = [(pygame.Rect(0,400,width,5))]
 
 class Player:
     def __init__(self,type,up,down,left,right):
@@ -38,7 +38,6 @@ class Player:
 
 
     def printThem(self):
-        pygame.draw
         if self.velx > 0:
             self.dir = "right"
         if self.velx < 0:
@@ -49,7 +48,7 @@ class Player:
         #JUMPING
         if pygame.key.get_pressed()[self.upkey]:# and self.grounded
             if self.jumpTimer == 0:
-                self.vely = -10
+                self.vely = -5
             if self.jumpTimer < 10:
                 self.jump = True
                 self.jumpTimer += 1
@@ -72,6 +71,8 @@ class Player:
             self.jumpTimer = 0
         else:
             self.grounded = False
+
+        
 
        
         
@@ -135,7 +136,9 @@ class Player:
         
         self.x += self.velx
         #print(self.vely, self.y,self.grav)
-        pygame.draw.rect(window,(255,255,255), pygame.Rect(self.x,self.y,self.len,self.wid))
+        pygame.draw.rect(window,(255,255,255), pygame.Rect(self.x,self.y-30,self.len,self.wid))
+        self.hitbox = pygame.Rect(self.x,self.y-30,self.len,self.wid)
+        pygame.draw.rect(window,(255,0,0), self.hitbox, 1)
         
 
 players = []
@@ -157,6 +160,10 @@ while True:
         break
     for i in range(playerCount):
         players[i].printThem()
+
+
+    pygame.draw.rect(window, (255,0,0), groundHitboxes[0], 1)
+
 
     pygame.display.flip()
     ticker.tick(60)
